@@ -1,34 +1,315 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <link rel="icon" type="image/png" href="/images/favicon.png" />
-  <title>Opal [Experiment]</title>
-  <meta
-    property="og:image"
-    content="https://opal.google/images/share-card-prod.png"
-  />
-  <meta property="og:image:width" content="1440" />
-  <meta property="og:image:height" content="810" />
-  <meta
-    name="twitter:image"
-    content="https://opal.google/images/share-card-prod.png"
-  />
-  <link rel="stylesheet" href="/styles/shell.css" />
-  <script type="module" crossorigin src="/shell.js"></script>
-  <link rel="modulepreload" crossorigin href="/modulepreload-polyfill-DvzacyrX.js">
-  <link rel="modulepreload" crossorigin href="/oauth-CnOhGcuN.js">
-  <link rel="modulepreload" crossorigin href="/logger-DL6elSFQ.js">
-</head>
-<body>
-  <iframe
-    id="opal-app"
-    sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-modals allow-storage-access-by-user-activation allow-downloads allow-top-navigation"
-    allow="clipboard-read; clipboard-write; microphone; camera"
-  ></iframe>
-  <template>
-    <script type="application/json">
-      {"ALLOWED_REDIRECT_ORIGINS":["https://gemini-autopush.corp.google.com","https://gemini-preprod.corp.google.com","https://gemini-staging.corp.google.com","https://gemini.google.com"],"MEASUREMENT_ID":"G-XR9XVJ2F2Y","BACKEND_API_ENDPOINT":"https://appcatalyst.pa.googleapis.com","ENABLE_BACKEND_CLIENT":false,"ENVIRONMENT_NAME":"prod","GOOGLE_OAUTH_TOKEN_ENDPOINT":"","GOOGLE_OAUTH_AUTH_ENDPOINT":"","GOOGLE_DOCS_API_ENDPOINT":"","GOOGLE_SHEETS_API_ENDPOINT":"","GOOGLE_SLIDES_API_ENDPOINT":"","GOOGLE_DRIVE_API_ENDPOINT":"","GOOGLE_DRIVE_PUBLISH_PERMISSIONS":[{"type":"anyone"}],"GOOGLE_DRIVE_USER_FOLDER_NAME":"Opal","GOOGLE_FEEDBACK_PRODUCT_ID":"5364532","GOOGLE_FEEDBACK_BUCKET":"prod","ALLOW_3P_MODULES":false,"SURVEY_MODE":"on","SURVEY_API_KEY":"AIzaSyDDKBig5pupGWfCcRfxa0R-yjjTTHKWZ-c","SURVEY_NL_TO_OPAL_SATISFACTION_1_TRIGGER_ID":"w43Xnuh10sg9p1fWkLu0SzpAybax","OAUTH_CLIENT":"941581635-8nfsqsiutd5lh3k03147funjfcudq5fm.apps.googleusercontent.com","SHELL_GUEST_ORIGIN":"https://opal.google","SHELL_HOST_ORIGINS":["https://opal-ui.corp.google.com","https://opal.goog","https://opal.google","https://opal.google.com"],"SHELL_PREFIX":"","SHARE_SURFACE_URL_TEMPLATES":{"gemini":"https://gemini.google.com/gem-labs/{fileId}?resourcekey={resourceKey}"},"FAKE_MODE":false,"DEV_BACKEND_MODE":false,"domains":{"google.com":{"disallowPublicPublishing":true,"preferredUrl":"https://opal.corp.goog/"}},"flags":{"mcp":false,"force2DGraph":false,"consistentUI":false,"opalAdk":false,"outputTemplates":false,"googleOne":false,"enableGoogleDriveTools":false,"enableNotebookLm":false,"enableResumeAgentRun":false,"enableGraphEditorAgent":false,"textEditorRemix":false,"showTokenCounter":false,"enableOpalBackend":false,"enableSessionsBackend":false,"enableSingletonPrefixCache":true}}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原來你們以前是神？揭秘家裡那隻液體小老虎</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        egyptian: {
+                            gold: '#D4AF37',
+                            blue: '#1A365D',
+                            sand: '#F4E4BC',
+                            cyber: '#00F2FF'
+                        },
+                        dark: {
+                            bg: '#05070A',
+                            card: '#0F172A'
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Outfit', 'Noto Sans TC', 'sans-serif'],
+                        body: ['Noto Sans TC', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            'from': { textShadow: '0 0 10px #00F2FF, 0 0 20px #00F2FF' },
+                            'to': { textShadow: '0 0 20px #00F2FF, 0 0 30px #D4AF37' }
+                        }
+                    }
+                }
+            }
+        }
     </script>
-  </template>
+    <style>
+        body {
+            background-color: #05070A;
+            color: #E2E8F0;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 24px;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #D4AF37 0%, #00F2FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+        .cyber-border {
+            position: relative;
+        }
+        .cyber-border::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #00F2FF;
+            box-shadow: 0 0 10px #00F2FF;
+        }
+        ::selection {
+            background: #D4AF37;
+            color: #05070A;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-egyptian-gold selection:text-black">
+
+    <!-- Header Section -->
+    <header class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+        <!-- Background Ambient Elements -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-egyptian-gold rounded-full filter blur-[120px] animate-pulse-slow"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-egyptian-cyber rounded-full filter blur-[120px] animate-pulse-slow" style="animation-delay: 2s"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center gap-12 mb-16">
+                    <div class="w-full md:w-1/2 space-y-6">
+                        <span class="inline-block px-4 py-1 rounded-full border border-egyptian-gold text-egyptian-gold font-display tracking-widest text-sm mb-4 animate-bounce">
+                            M11409921 • ARCHIVE
+                        </span>
+                        <h1 class="text-5xl md:text-7xl font-black font-display leading-tight">
+                            原來你們以前是<span class="gradient-text">神</span>？
+                        </h1>
+                        <p class="text-xl text-slate-400 font-light leading-relaxed">
+                            揭秘家裡那隻「液體小老虎」：從荒野、神壇到你的床頭毯。一場跨越萬年的貓科文明之旅。
+                        </p>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2 group">
+                        <div class="relative overflow-hidden rounded-3xl border-2 border-egyptian-gold/30 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 pointer-events-none"></div>
+                            <img src='https://opal.google/board/blobs/524df9f0-d636-4547-b23a-4aced221986c' alt='Cat Evolution Banner' class="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-110" />
+                            <div class="absolute bottom-6 left-6 z-20">
+                                <div class="text-egyptian-cyber font-display text-xs tracking-tighter uppercase mb-1">Concept Visualization</div>
+                                <div class="text-white text-sm font-light">From Ancient Altars to Cyber Homes</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer">
+            <svg class="w-6 h-6 text-egyptian-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </header>
+
+    <!-- Article Content -->
+    <main class="container mx-auto px-6 py-20">
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- Section 1 -->
+            <section class="mb-32">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="h-1 w-12 bg-egyptian-cyber"></div>
+                    <h2 class="text-3xl font-display font-bold text-white tracking-wide">一、 喵星人硬核拆解</h2>
+                </div>
+                
+                <div class="glass-panel p-8 md:p-12 leading-loose text-lg text-slate-300">
+                    <p class="mb-6">
+                        從解剖學的角度來看，家貓（<span class="italic text-egyptian-gold font-display font-semibold">Felis catus</span>）是近乎完美的演化傑作。
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-8 mt-10">
+                        <div class="space-y-4 border-l-2 border-egyptian-gold/20 pl-6 hover:border-egyptian-cyber transition-colors">
+                            <h3 class="text-egyptian-gold font-bold">脈絡膜層 (Tapetum lucidum)</h3>
+                            <p class="text-sm opacity-80">這層反射層能將微弱光線回收利用，讓牠們在黑暗中的視力如魚得水，捕捉人類看不見的高頻振動。</p>
+                        </div>
+                        <div class="space-y-4 border-l-2 border-egyptian-gold/20 pl-6 hover:border-egyptian-cyber transition-colors">
+                            <h3 class="text-egyptian-gold font-bold">液體屬性 (Liquid State)</h3>
+                            <p class="text-sm opacity-80">貓咪沒有固定的鎖骨，只要頭能穿過的地方，身體就能像流水一樣滑過。這輔以強大的後肢爆發力，讓牠們成為極致的掠食者。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: History Timeline Bento -->
+            <section class="mb-32">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="h-1 w-12 bg-egyptian-gold"></div>
+                    <h2 class="text-3xl font-display font-bold text-white tracking-wide">二、 貓貓公關奮鬥史</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2 glass-panel p-8 hover:bg-slate-900/50 transition-all">
+                        <span class="text-egyptian-gold font-display text-sm">10,000 YEARS AGO</span>
+                        <h3 class="text-2xl font-bold mt-2 mb-4">近東起源</h3>
+                        <p class="text-slate-400">當非洲野貓發現人類糧倉鼠患猖獗，一場「保全服務」換「避難所」的跨物種貿易就此展開。</p>
+                    </div>
+                    <div class="glass-panel p-8 border-egyptian-gold/40 flex flex-col justify-center text-center">
+                        <div class="text-5xl mb-4">🏺</div>
+                        <h4 class="font-bold">古埃及巔峰</h4>
+                        <p class="text-sm text-slate-500">巴斯特女神化身，殺貓即重罪。</p>
+                    </div>
+                    <div class="glass-panel p-8 flex flex-col justify-center text-center bg-red-900/10 border-red-500/20">
+                        <div class="text-5xl mb-4">🧙‍♀️</div>
+                        <h4 class="font-bold">中世紀黑暗期</h4>
+                        <p class="text-sm text-slate-500">被視為女巫同夥，遭到大規模獵捕。</p>
+                    </div>
+                    <div class="md:col-span-2 glass-panel p-8 bg-egyptian-cyber/5 border-egyptian-cyber/20">
+                        <h4 class="text-egyptian-cyber font-bold mb-2">現代品牌轉型</h4>
+                        <p class="text-slate-300">從守糧員到「招財貓」，成功掌握東方荷包，化身財富流動的象徵。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3 & 4 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-32">
+                <section>
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="h-1 w-12 bg-egyptian-cyber"></div>
+                        <h2 class="text-2xl font-display font-bold text-white">三、 都市人的心靈 OK 蹦</h2>
+                    </div>
+                    <div class="space-y-6 text-slate-400 leading-relaxed">
+                        <p>
+                            撫摸貓咪時產生的「呼嚕聲（Purr）」，被證實能誘發人類分泌催產素，降低壓力荷爾蒙，這是一劑實質的降血壓「數位成癮品」。
+                        </p>
+                        <div class="bg-egyptian-blue/30 p-6 rounded-2xl border-l-4 border-egyptian-cyber">
+                            「吸貓文化」反映了現代人在資訊超載的時代中，對原始、單純、且無條件療癒感的一種集體補償心理。
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="h-1 w-12 bg-red-500"></div>
+                        <h2 class="text-2xl font-display font-bold text-white">四、 毛茸茸的論戰</h2>
+                    </div>
+                    <div class="space-y-6 text-slate-400 leading-relaxed">
+                        <ul class="space-y-4">
+                            <li class="flex gap-3">
+                                <span class="text-red-500">●</span>
+                                <span><strong class="text-slate-200">室內 vs 放養：</strong>數據顯示室內飼養能極大延長貓咪壽命並減少生態衝擊。</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="text-red-500">●</span>
+                                <span><strong class="text-slate-200">品種審美：</strong>折耳或扁臉等特徵往往伴隨終身病痛，真正的愛應建立在健康基礎上。</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Section 5: Future Cyber -->
+            <section class="mb-32 relative group">
+                <div class="absolute inset-0 bg-gradient-to-r from-egyptian-cyber/10 to-egyptian-gold/10 rounded-[40px] -m-4 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="glass-panel p-10 md:p-16 relative border-egyptian-cyber/40 overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 text-8xl opacity-10 font-black font-display select-none">CYBER</div>
+                    
+                    <div class="flex items-center gap-4 mb-10">
+                        <div class="h-1 w-12 bg-egyptian-cyber shadow-[0_0_10px_#00F2FF]"></div>
+                        <h2 class="text-3xl font-display font-bold text-white tracking-wide">五、 喵星人的賽博未來</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-12">
+                        <div>
+                            <p class="text-lg text-slate-300 leading-relaxed mb-6">
+                                「AI 鏟屎官」不再是笑話。智慧貓砂盆能透過 AI 分析提前預演可能的腎臟病變；穿戴式項圈則能精準追蹤主子的每一秒睡眠。
+                            </p>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="bg-black/40 p-4 rounded-xl border border-white/5 flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-lg bg-egyptian-cyber/20 flex items-center justify-center text-egyptian-cyber italic font-bold">DNA</div>
+                                <div class="text-sm">基因檢測與客製化營養補充</div>
+                            </div>
+                            <div class="bg-black/40 p-4 rounded-xl border border-white/5 flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-lg bg-egyptian-gold/20 flex items-center justify-center text-egyptian-gold italic font-bold">LIFE+</div>
+                                <div class="text-sm">長壽藥研發延長健康壽命</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conclusion -->
+            <section class="mt-40 text-center relative">
+                <div class="mb-12 inline-block">
+                    <div class="w-24 h-24 mx-auto rounded-full border-4 border-egyptian-gold p-1 animate-float">
+                        <div class="w-full h-full rounded-full bg-egyptian-gold/20 flex items-center justify-center text-4xl">🐾</div>
+                    </div>
+                </div>
+                <h2 class="text-3xl font-display font-bold text-white mb-8">寫給鏟屎官的未來備忘錄</h2>
+                <div class="max-w-2xl mx-auto space-y-6 text-xl font-light text-slate-400 italic">
+                    <p>「當我們享受著這些『液體小老虎』帶來的療癒時，也請別忘了，這份陪伴的背後是沉甸甸的責任。」</p>
+                    <p class="text-base text-slate-500 not-italic">在未來的賽博時代，讓我們繼續與這群神祕優雅的物種，共享這顆星球上的溫暖與靜好。畢竟，能夠服侍曾經是神靈的牠們，或許也是一種人類的榮幸。</p>
+                </div>
+                
+                <div class="mt-20 pt-10 border-t border-white/5 text-slate-600 text-xs tracking-[0.2em] font-display">
+                    END OF ARCHIVE • M11409921 • HUMAN-FELINE SYMBIOISIS REPORT
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Floating Scroll Indicator -->
+    <div class="fixed right-6 bottom-6 hidden md:block">
+        <div class="glass-panel p-4 flex flex-col gap-4 text-egyptian-gold/60">
+            <div class="w-1 h-1 bg-egyptian-gold rounded-full"></div>
+            <div class="w-1 h-1 bg-egyptian-gold rounded-full"></div>
+            <div class="w-1 h-1 bg-egyptian-cyber rounded-full animate-pulse"></div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth reveal on scroll (simplified version)
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                        entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+                observer.observe(section);
+            });
+        });
+    </script>
 </body>
+</html>
