@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>婚宴座位與喜餅兌換</title>
+  <!-- 官方 LINE LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #fdfaf7;
+      margin: 0;
+      padding: 24px 16px;
+      color: #4a403a;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 380px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: 0 8px 24px rgba(180, 150, 140, 0.1);
+      border: 1px solid #f2e9e4;
+      text-align: center;
+    }
+    h2 {
+      margin: 0 0 8px 0;
+      color: #7d5a50;
+      font-size: 22px;
+      letter-spacing: 0.5px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #9c8e85;
+      margin-bottom: 24px;
+    }
+    .table-box {
+      background: #fdf6f4;
+      border: 1px solid #f3e5e1;
+      border-radius: 14px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .table-label {
+      font-size: 13px;
+      color: #9c847e;
+      letter-spacing: 1px;
+    }
+    .table-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: #a85858;
+      margin-top: 8px;
+    }
+    .cake-box {
+      border: 2px dashed #e8c5be;
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 24px;
+      background: #fffcfb;
+    }
+    .cake-title {
+      margin: 0 0 6px 0;
+      color: #8c5b51;
+      font-size: 17px;
+      font-weight: 600;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0 18px 0;
+      border: 1.5px solid #e5d5cf;
+      border-radius: 12px;
+      font-size: 17px;
+      text-align: center;
+      color: #4a403a;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus {
+      border-color: #8c5b51;
+    }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: #8c5b51;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, opacity 0.2s;
+    }
+    .btn:active {
+      background: #734840;
+    }
+    .btn:disabled {
+      background: #d8ceca;
+      color: #ffffff;
+      cursor: not-allowed;
+    }
+    .btn-claimed {
+      background: #e9ecef !important;
+      color: #adb5bd !important;
+      border: 1px solid #dee2e6;
+    }
+    .tip-text {
+      font-size: 12.5px;
+      color: #a0928b;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+    .spinner {
+      margin: 20px auto;
+      width: 32px;
+      height: 32px;
+      border: 3px solid #f0e6e4;
+      border-top: 3px solid #8c5b51;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- 1. 載入狀態 -->
+  <div id="loading-card" class="card">
+    <div class="spinner"></div>
+    <p style="font-size: 14px; color: #8c7b74; margin: 0;">正在核對賓客名冊，請稍候...</p>
+  </div>
+
+  <!-- 2. 初次綁定姓名畫面 -->
+  <div id="bind-card" class="card" style="display:none;">
+    <h2>歡迎蒞臨婚宴</h2>
+    <div class="subtitle">請輸入您的姓名以查詢桌位與專屬憑證</div>
+    <input type="text" id="guest-name-input" placeholder="請輸入您的繁體全名" autocomplete="off">
+    <button class="btn" id="bind-submit-btn" onclick="submitBind()">查詢我的座位</button>
+    <div class="tip-text">※ 僅需輸入一次，系統將自動記住您的身分。</div>
+  </div>
+
+  <!-- 3. 主資訊卡片（桌號 + 喜餅卡） -->
+  <div id="main-card" class="card" style="display:none;">
+    <h2>歡迎，<span id="display-name"></span></h2>
+    <div class="subtitle" style="margin-bottom: 12px;">很高興能與您分享這份喜悅</div>
+
+    <div class="table-box">
+      <div class="table-label">YOUR TABLE / 您的桌次</div>
+      <div class="table-name" id="display-table">載入中</div>
+    </div>
+
+    <!-- 喜餅兌換卡（具備領餅資格時動態顯示） -->
+    <div id="cake-card" class="cake-box" style="display:none;">
+      <div class="cake-title">🎁 專屬喜餅兌換憑證</div>
+      <p id="cake-desc" class="tip-text" style="margin: 6px 0 14px 0;">請至喜餅發放處出示此畫面，由工作人員點擊核銷</p>
+      <button class="btn" id="redeem-btn" onclick="redeemCake()">工作人員核銷</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ==================== 請在此填入您的設定 ====================
+  const MY_LIFF_ID = "YOUR_LIFF_ID";       // 填入 LINE Developers 申請到的 LIFF ID
+  const GAS_URL = "YOUR_GAS_WEB_APP_URL";   // 填入 Google Apps Script 部署後的 Web App URL
+  // ============================================================
+
+  let userLineId = "";
+
+  // 1. 初始化 LIFF
+  async function initApp() {
+    try {
+      await liff.init({ liffId: MY_LIFF_ID });
+
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
+      }
+
+      const profile = await liff.getProfile();
+      userLineId = profile.userId;
+
+      // 檢查此 LINE User ID 是否已經與試算表中的姓名綁定
+      checkBindingStatus();
+    } catch (err) {
+      console.error(err);
+      alert("初始化失敗，請重新整理或確認 LINE 網路連線！");
+    }
+  }
+
+  // 2. 向 GAS 查詢綁定狀態
+  async function checkBindingStatus() {
+    try {
+      const response = await fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "check_user", lineId: userLineId })
+      });
+      const data = await response.json();
+
+      document.getElementById("loading-card").style.display = "none";
+
+      if (data.status === "bound") {
+        renderGuestCard(data.guest);
+      } else {
+        document.getElementById("bind-card").style.display = "block";
+      }
+    } catch (err) {
+      console.error(err);
+      alert("資料讀取失敗，請確認網路連線或稍後再試。");
+    }
+  }
+
+  // 3. 送出姓名進行綁定
+  async function submitBind() {
+    const inputName = document.getElementById("guest-name-input").value.trim();
+    if (!inputName) {
+      alert("請輸入您的全名！");
+      return;
+    }
+
+    const submitBtn = document.getElementById("bind-submit-btn");
+    submitBtn.disabled = true;
+    submitBtn.innerText = "查詢中...";
+
+    try {
+      const response = await fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "bind_user",
+          lineId: userLineId,
+          name: inputName
+        })
+      });
+      const data = await response.json();
+
+      if (data.status === "success") {
+        document.getElementById("bind-card").style.display = "none";
+        renderGuestCard(data.guest);
+      } else {
+        alert(data.message || "查無此姓名，請確認是否輸入全名，或洽現場招待人員！");
+        submitBtn.disabled = false;
+        submitBtn.innerText = "查詢我的座位";
+      }
+    } catch (err) {
+      console.error(err);
+      alert("連線異常，請稍候再試！");
+      submitBtn.disabled = false;
+      submitBtn.innerText = "查詢我的座位";
+    }
+  }
+
+  // 4. 繪製個人座位與喜餅卡畫面
+  function renderGuestCard(guest) {
+    document.getElementById("display-name").innerText = guest.name;
+    document.getElementById("display-table").innerText = guest.table;
+    document.getElementById("main-card").style.display = "block";
+
+    if (guest.hasCake) {
+      document.getElementById("cake-card").style.display = "block";
+      updateCakeUI(guest.claimed, guest.claimTime);
+    }
+  }
+
+  // 5. 更新喜餅領取按鈕狀態
+  function updateCakeUI(isClaimed, time) {
+    const btn = document.getElementById("redeem-btn");
+    const desc = document.getElementById("cake-desc");
+
+    if (isClaimed) {
+      btn.innerText = "✓ 已完成領取";
+      btn.disabled = true;
+      btn.classList.add("btn-claimed");
+      desc.innerText = time ? `已於 ${time} 領取完畢，感謝您的祝福！` : "已完成領取，感謝您的祝福！";
+    } else {
+      btn.innerText = "工作人員核銷";
+      btn.disabled = false;
+      btn.classList.remove("btn-claimed");
+      desc.innerText = "請至喜餅發放處出示此畫面，由工作人員點擊核銷";
+    }
+  }
+
+  // 6. 工作人員核銷按鈕點擊事件
+  async function redeemCake() {
+    const pin = prompt("【現場工作人員專用】\n請輸入核銷代碼：");
+    if (!pin) return; // 賓客按下取消或未輸入
+
+    const btn = document.getElementById("redeem-btn");
+    btn.disabled = true;
+    btn.innerText = "核銷中...";
+
+    try {
+      const response = await fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "redeem",
+          lineId: userLineId,
+          pin: pin.trim()
+        })
+      });
+      const data = await response.json();
+
+      if (data.status === "success") {
+        alert("核銷成功！喜餅已領取。");
+        updateCakeUI(true, data.time);
+      } else if (data.status === "wrong_pin") {
+        alert("核銷密碼錯誤！請由現場工作人員操作。");
+        btn.disabled = false;
+        btn.innerText = "工作人員核銷";
+      } else if (data.status === "already_claimed") {
+        alert("此憑證先前已由他人完成領取囉！");
+        updateCakeUI(true, "");
+      } else {
+        alert(data.message || "核銷失敗，請稍候再試。");
+        btn.disabled = false;
+        btn.innerText = "工作人員核銷";
+      }
+    } catch (err) {
+      console.error(err);
+      alert("連線逾時，請檢查網路連線！");
+      btn.disabled = false;
+      btn.innerText = "工作人員核銷";
+    }
+  }
+
+  // 啟動流程
+  initApp();
+</script>
+
+</body>
+</html>
